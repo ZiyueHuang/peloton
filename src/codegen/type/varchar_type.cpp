@@ -187,6 +187,26 @@ struct Trim : public TypeSystem::UnaryOperatorHandleNull {
   }
 };
 
+// Upper
+struct Upper : public TypeSystem::UnaryOperatorHandleNull {
+  bool SupportsType(const Type &type) const override {
+    return type.GetSqlType() == Varchar::Instance();
+  }
+
+  Type ResultType(UNUSED_ATTRIBUTE const Type &val_type) const override {
+    return Varchar::Instance();
+  }
+
+  Value Impl(CodeGen &codegen, const Value &val,
+             const TypeSystem::InvocationContext &ctx) const override {
+    llvm::Value *executor_ctx = ctx.executor_context;
+    llvm::Value *raw_ret =
+        codegen.Call(StringFunctionsProxy::Upper,
+                     {executor_ctx, val.GetValue(), val.GetLength()});
+    return Value{Varchar::Instance(), raw_ret, val.GetLength()};
+  }
+};
+
 ////////////////////////////////////////////////////////////////////////////////
 ///
 /// Binary operators
@@ -535,10 +555,12 @@ std::vector<TypeSystem::ComparisonInfo> kComparisonTable = {{kCompareVarchar}};
 // Unary operators
 Ascii kAscii;
 Length kLength;
+Upper kUpper;
 Trim kTrim;
 std::vector<TypeSystem::UnaryOpInfo> kUnaryOperatorTable = {
     {OperatorId::Ascii, kAscii},
     {OperatorId::Length, kLength},
+    {OperatorId::Upper, kUpper},
     {OperatorId::Trim, kTrim}};
 
 // Binary operations

@@ -71,9 +71,13 @@ class StringFunctions {
                           uint32_t str_len, const char *from,
                           uint32_t from_len);
 
+  static char*  Upper(executor::ExecutorContext& ctx, const char* str,
+                      const uint32_t length);
+
   // Length will return the number of characters in the given string
   static uint32_t Length(executor::ExecutorContext &ctx, const char *str,
                          uint32_t length);
+
 };
 
 }  // namespace function

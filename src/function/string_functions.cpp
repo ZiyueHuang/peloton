@@ -114,6 +114,22 @@ StringFunctions::StrWithLen StringFunctions::Substr(
   return StringFunctions::StrWithLen{str + begin, end - begin + 1};
 }
 
+char* StringFunctions::Upper(UNUSED_ATTRIBUTE executor::ExecutorContext &ctx,
+                             const char* str,
+                             const uint32_t length) {
+  PELOTON_ASSERT(str != nullptr);
+  PELOTON_ASSERT(length > 0);
+
+  auto* pool = ctx.GetPool();
+  char* new_str = reinterpret_cast<char *>(pool->Allocate(length));
+
+  for (uint32_t i = 0; i < length; i++) {
+    new_str[i] = static_cast<char>(std::toupper(str[i]));
+  }
+
+  return new_str;
+}
+
 StringFunctions::StrWithLen StringFunctions::Repeat(
     executor::ExecutorContext &ctx, const char *str, uint32_t length,
     uint32_t num_repeat) {

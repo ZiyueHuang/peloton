@@ -1214,6 +1214,12 @@ void Catalog::InitializeFunctions() {
           function::BuiltInFuncType{OperatorId::Substr,
                                     function::OldEngineStringFunctions::Substr},
           txn);
+      AddBuiltinFunction(
+          "upper", {type::TypeId::VARCHAR}, type::TypeId::VARCHAR,
+          internal_lang, "Upper",
+          function::BuiltInFuncType{OperatorId::Upper,
+                                    function::OldEngineStringFunctions::Upper},
+          txn);
       AddBuiltinFunction("char_length", {type::TypeId::VARCHAR},
                          type::TypeId::INTEGER, internal_lang, "CharLength",
                          function::BuiltInFuncType{

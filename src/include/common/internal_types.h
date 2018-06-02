@@ -1080,6 +1080,7 @@ enum class OperatorId : uint32_t {
   CharLength,
   OctetLength,
   Length,
+  Upper,
   Repeat,
   Replace,
   LTrim,

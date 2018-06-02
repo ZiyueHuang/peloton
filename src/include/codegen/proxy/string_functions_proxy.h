@@ -22,6 +22,7 @@ PROXY(StringFunctions) {
   // Proxy everything in function::StringFunctions
   DECLARE_METHOD(Ascii);
   DECLARE_METHOD(Like);
+  DECLARE_METHOD(Upper);
   DECLARE_METHOD(Length);
   DECLARE_METHOD(BTrim);
   DECLARE_METHOD(Trim);

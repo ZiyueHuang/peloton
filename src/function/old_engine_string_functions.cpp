@@ -77,6 +77,19 @@ type::Value OldEngineStringFunctions::Substr(
   return type::ValueFactory::GetVarcharValue(str.substr(from, len));
 }
 
+type::Value OldEngineStringFunctions::Upper(
+    const std::vector<type::Value> &args) {
+  PELOTON_ASSERT(args.size() == 1);
+  if (args[0].IsNull()) {
+    return type::ValueFactory::GetNullValueByType(type::TypeId::VARCHAR);
+  }
+
+  executor::ExecutorContext ctx{nullptr};
+  char* ret = StringFunctions::Upper(ctx, args[0].GetAs<const char *>(),
+                                     args[0].GetLength());
+  return type::ValueFactory::GetVarcharValue(ret);
+}
+
 // Number of characters in string
 type::Value OldEngineStringFunctions::CharLength(
     const std::vector<type::Value> &args) {
@@ -223,11 +236,6 @@ type::Value OldEngineStringFunctions::Length(
   uint32_t ret = StringFunctions::Length(ctx, args[0].GetAs<const char *>(),
                                          args[0].GetLength());
   return type::ValueFactory::GetIntegerValue(ret);
-}
-
-type::Value OldEngineStringFunctions::Upper(
-    UNUSED_ATTRIBUTE const std::vector<type::Value> &args) {
-  throw Exception{"Upper not implemented in old engine"};
 }
 
 type::Value OldEngineStringFunctions::Lower(

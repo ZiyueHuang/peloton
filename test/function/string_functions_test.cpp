@@ -93,6 +93,28 @@ TEST_F(StringFunctionsTests, AsciiTest) {
   EXPECT_TRUE(result.IsNull());
 }
 
+
+TEST_F(StringFunctionsTests, UpperTest) {
+  for (int i = 0; i < 1; i++) {
+    std::string str = "ziyue";
+    std::string expected(str);
+    std::transform(expected.begin(), expected.end(), expected.begin(),
+                   [](unsigned char c) { return std::toupper(c); });
+
+    std::vector<type::Value> args = {
+        type::ValueFactory::GetVarcharValue(str)};
+
+    auto result = function::OldEngineStringFunctions::Upper(args);
+    EXPECT_FALSE(result.IsNull());
+    EXPECT_EQ(expected, std::string(result.GetAs<const char *>()));
+  }
+  // NULL CHECK
+  std::vector<type::Value> args = {
+      type::ValueFactory::GetNullValueByType(type::TypeId::VARCHAR)};
+  auto result = function::OldEngineStringFunctions::Upper(args);
+  EXPECT_TRUE(result.IsNull());
+}               
+
 TEST_F(StringFunctionsTests, ChrTest) {
   const char column_char = 'A';
   for (int i = 0; i < 52; i++) {

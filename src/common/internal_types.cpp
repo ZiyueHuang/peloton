@@ -3072,6 +3072,8 @@ std::string OperatorIdToString(OperatorId op_id) {
       return "LogicalOr";
     case OperatorId::Ascii:
       return "Ascii";
+    case OperatorId::Upper:
+      return "Upper";
     case OperatorId::Chr:
       return "Chr";
     case OperatorId::Concat:
